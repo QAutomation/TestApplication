@@ -167,7 +167,7 @@
   <ItemGroup>
     <Compile Include="Model\GradesModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Controllers\MongoTest.cs" />
+    <Compile Include="Controllers\GradesApiTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App.config" />
