@@ -2,6 +2,7 @@
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
+/api/Web.config
 /api/bin
 /api/obj/Debug
 /api.Tests/bin/Debug

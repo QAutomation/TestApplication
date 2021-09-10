@@ -17,6 +17,6 @@ namespace api.Tests.Controllers
             GradesController controller = new GradesController();
             IEnumerable<GradesDbModel.ApiModel> items = controller.Get(1, 10);
             Assert.AreEqual(items.Count(), 10);
-        }
+         }
     }
 }
