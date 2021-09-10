@@ -15,29 +15,36 @@ namespace api.Controllers
 {
     public class GradesController : ApiController
     {
-        private const string DbName = "sample_training";
-        private const string CollectionName = "grades";
+        private const string DB_NAME = "sample_training";
+        private const string GRADES_COLL_NAME = "grades";
+        public static IEnumerable<GradesDbModel.ApiModel> Grades { get; set; } = 
+            GetFromDb<IEnumerable<GradesDbModel.ApiModel>, GradesDbModel>(
+                ConfigurationManager.AppSettings["connectionString"].ToString(),
+                DB_NAME,
+                GRADES_COLL_NAME,
+                0,
+                0,
+                true
+            );
 
         // GET api/values
-        public IEnumerable<GradesDbModel.ApiModel> Get(int pageNumber, int pageSize=10)
+        public IEnumerable<GradesDbModel.ApiModel> Get(int pageNumber, int pageSize)
         {
-            var startIndex = (pageNumber * pageSize)-pageSize;
-            var uri = ConfigurationManager.AppSettings["connectionString"].ToString();
-            return GetFromDb<IEnumerable<GradesDbModel.ApiModel>,GradesDbModel>(uri,DbName,CollectionName, startIndex, startIndex+pageSize);
+            var startIndex = (pageNumber * pageSize) - pageSize;
+            return Grades.ToList().GetRange(startIndex, pageSize);      
         }
 
-        private static T GetFromDb<T,T1>(string uri, string dbName, string collectionName, int from, int to) 
-            where T : IEnumerable<GradesDbModel.ApiModel> 
+        private static T GetFromDb<T, T1>(string uri, string dbName, string collectionName, int from, int to, bool getAll = false)
+            where T : IEnumerable<GradesDbModel.ApiModel>
             where T1 : GradesDbModel
         {
             var settings = MongoClientSettings.FromConnectionString(uri);
             var client = new MongoClient(settings);
-            var database = client.GetDatabase(DbName);
-            IMongoCollection<T1> list = database.GetCollection<T1>(CollectionName);
+            var database = client.GetDatabase(DB_NAME);
+            IMongoCollection<T1> list = database.GetCollection<T1>(GRADES_COLL_NAME);
             var res = list.Find(FilterDefinition<T1>.Empty);
             List<T1> obj = res.ToList();
-            var resList = obj.GetRange(from, to).Select(x => x.ToApiModel());
-            return (T)resList;
+            return getAll ? (T)obj.Select(x => x.ToApiModel()) : (T)obj.GetRange(from, to).Select(x => x.ToApiModel());
         }
 
         //// GET api/values/5

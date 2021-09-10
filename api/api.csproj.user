@@ -24,7 +24,7 @@
           <SQLDebugging>False</SQLDebugging>
           <ExternalProgram>
           </ExternalProgram>
-          <StartExternalURL>https://localhost:44352/swagger</StartExternalURL>
+          <StartExternalURL>https://localhost:44352/swagger/ui/index#!/Grades/Grades_Get</StartExternalURL>
           <StartCmdLineArguments>
           </StartCmdLineArguments>
           <StartWorkingDirectory>
